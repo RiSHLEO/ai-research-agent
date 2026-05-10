@@ -1,0 +1,5 @@
+openai
+streamlit
+duckduckgo-search
+wikipedia
+python-dotenv
