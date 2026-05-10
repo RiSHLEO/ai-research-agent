@@ -7,7 +7,10 @@ from duckduckgo_search import DDGS
 import wikipedia
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# Works both locally and on Streamlit Cloud
+api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 st.set_page_config(page_title="AI Research Agent", page_icon="🔍")
 st.title("🔍 AI Research Agent")
