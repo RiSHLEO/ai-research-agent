@@ -17,7 +17,6 @@ st.title("🔍 AI Research Agent")
 st.write("Ask me to research any topic and I'll search the web and produce a report.")
 
 # ============ TOOL FUNCTIONS ============
-
 def web_search(query: str) -> str:
     try:
         with DDGS() as ddgs:
@@ -114,7 +113,8 @@ tool_map = {
 
 # ============ AGENT LOOP ============
 
-def run_agent(user_query: str, thinking_container):
+def run_agent(user_query: str, thinking_container, chat_history: list):
+    
     messages = [
         {
             "role": "system",
@@ -125,9 +125,15 @@ def run_agent(user_query: str, thinking_container):
 4. Synthesise everything into a clear, structured report
 
 Always use at least 2 tools before giving your final answer."""
-        },
-        {"role": "user", "content": user_query}
+        }
     ]
+    
+    # Add previous conversation for context
+    for msg in chat_history[-6:]:
+        messages.append({"role": msg["role"], "content": msg["content"]})
+    
+    # Add current question
+    messages.append({"role": "user", "content": user_query})
 
     steps = []
     max_iterations = 5
